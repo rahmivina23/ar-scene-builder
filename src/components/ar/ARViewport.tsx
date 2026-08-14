@@ -245,7 +245,7 @@ export default function ARViewport(props: ViewportProps) {
     });
   }, [angle, velocity]);
 
-  const range = points[points.length - 1].x;
+  const range = points[points.length - 1]?.x ?? 1;
 
   return (
     <Canvas
