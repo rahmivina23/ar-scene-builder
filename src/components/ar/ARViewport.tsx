@@ -88,19 +88,40 @@ function Murid({ walking }: { walking: boolean }) {
 }
 
 function EnvironmentModel() {
-  const { scene } = useGLTF(envAsset.url);
-  const cloned = useMemo(() => scene.clone(true), [scene]);
+  const { scene, animations } = useGLTF(envAsset.url, DRACO_PATH);
+  const group = useRef<THREE.Group>(null);
+  const { actions, names } = useAnimations(animations, group);
 
   useEffect(() => {
-    cloned.traverse((o) => {
-      const m = o as THREE.Mesh;
-      if (m.isMesh) m.receiveShadow = true;
-    });
-    fitObject(cloned, 46);
-    cloned.position.y -= 0.02;
-  }, [cloned]);
+    const first = names[0];
+    if (first) actions[first]?.reset().play();
+  }, [actions, names]);
 
-  return <primitive object={cloned} />;
+  useEffect(() => {
+    scene.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh) {
+        m.castShadow = true;
+        m.receiveShadow = true;
+      }
+    });
+    fitObject(scene, 24);
+  }, [scene]);
+
+  return (
+    <group ref={group} position={[9, 0, -11]} rotation={[0, -0.35, 0]}>
+      <primitive object={scene} />
+    </group>
+  );
+}
+
+function Ground() {
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+      <planeGeometry args={[120, 120]} />
+      <meshStandardMaterial color="#ddd9cf" roughness={1} />
+    </mesh>
+  );
 }
 
 function Sasaran({ distance }: { distance: number }) {
