@@ -195,10 +195,10 @@ export function SchoolEnvironment() {
 
       {/* road running away from camera (the throwing lane) */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, -8]} receiveShadow>
-        <planeGeometry args={[13, 60]} />
+        <planeGeometry args={[11, 60]} />
         <meshStandardMaterial color={ROAD} roughness={1} />
       </mesh>
-      {[-6.7, 6.7].map((x) => (
+      {[-5.7, 5.7].map((x) => (
         <mesh key={x} position={[x, 0.06, -8]} receiveShadow>
           <boxGeometry args={[0.6, 0.12, 60]} />
           <meshStandardMaterial color={KERB} roughness={1} />

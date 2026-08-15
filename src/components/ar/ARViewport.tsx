@@ -112,7 +112,7 @@ function Rig() {
   return (
     <OrbitControls
       makeDefault
-      target={[0, 1.5, -7]}
+      target={[0, 1.6, -9]}
       minDistance={6}
       maxDistance={40}
       maxPolarAngle={Math.PI / 2.15}
@@ -128,7 +128,7 @@ export function ARViewport(props: ViewportProps) {
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ position: [6.5, 3.4, 8.5], fov: 48 }}
+      camera={{ position: [8.5, 4.6, 11], fov: 46 }}
       gl={{ antialias: true }}
       onCreated={({ scene }) => {
         scene.fog = new THREE.Fog("#cfe3f5", 45, 130);
