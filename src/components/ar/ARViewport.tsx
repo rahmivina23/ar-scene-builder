@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sky, useAnimations, useGLTF, Line, Html } from "@react-three/drei";
+import { OrbitControls, Sky, Line, Html } from "@react-three/drei";
 import * as THREE from "three";
-import studentAsset from "@/assets/student.glb.asset.json";
 import { SchoolEnvironment } from "./SchoolEnvironment";
+import { StudentAvatar } from "./StudentAvatar";
 
 const G = 9.81;
 const LAUNCH_H = 1.35;
@@ -19,37 +19,6 @@ export type ViewportProps = {
   onLanded: (r: ShotResult) => void;
   onTick: (t: number, pos: [number, number, number]) => void;
 };
-
-function Student({ throwing }: { throwing: boolean }) {
-  const { scene, animations } = useGLTF(studentAsset.url);
-  const group = useRef<THREE.Group>(null);
-  const { actions, names } = useAnimations(animations, group);
-
-  useEffect(() => {
-    scene.traverse((o) => {
-      const m = o as THREE.Mesh;
-      if (m.isMesh) {
-        m.castShadow = true;
-        m.receiveShadow = true;
-      }
-    });
-  }, [scene]);
-
-  useEffect(() => {
-    const name = throwing ? names.find((n) => /run/i.test(n)) : names.find((n) => /idle/i.test(n));
-    const action = name ? actions[name] : undefined;
-    action?.reset().fadeIn(0.25).play();
-    return () => {
-      action?.fadeOut(0.25);
-    };
-  }, [throwing, actions, names]);
-
-  return (
-    <group ref={group} position={[0, 0, 1.5]} rotation={[0, Math.PI, 0]}>
-      <primitive object={scene} />
-    </group>
-  );
-}
 
 function Projectile({
   angle,
@@ -143,7 +112,7 @@ function Rig() {
   return (
     <OrbitControls
       makeDefault
-      target={[0, 1.4, -6]}
+      target={[0, 1.5, -7]}
       minDistance={6}
       maxDistance={40}
       maxPolarAngle={Math.PI / 2.15}
@@ -159,7 +128,7 @@ export function ARViewport(props: ViewportProps) {
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ position: [11, 5.2, 12], fov: 45 }}
+      camera={{ position: [6.5, 3.4, 8.5], fov: 48 }}
       gl={{ antialias: true }}
       onCreated={({ scene }) => {
         scene.fog = new THREE.Fog("#cfe3f5", 45, 130);
@@ -180,7 +149,7 @@ export function ARViewport(props: ViewportProps) {
 
       <Suspense fallback={null}>
         <SchoolEnvironment />
-        <Student throwing={props.running} />
+        <StudentAvatar throwing={props.running} />
       </Suspense>
 
       {props.showTrajectory && <TrajectoryLine angle={props.angle} velocity={props.velocity} />}
