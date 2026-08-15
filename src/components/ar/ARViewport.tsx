@@ -170,4 +170,3 @@ export function ARViewport(props: ViewportProps) {
   );
 }
 
-useGLTF.preload(studentAsset.url);
