@@ -50,8 +50,8 @@ function Projectile({
       landed.current = true;
       const tf = (vy + Math.sqrt(vy * vy + 2 * G * LAUNCH_H)) / G;
       onLanded({ range: vx * tf, maxH: LAUNCH_H + (vy * vy) / (2 * G), time: tf });
-      ref.current.position.set(vx * tf, 0.06, 1.5 - 0);
-      ref.current.position.z = 1.5 - 0;
+      ref.current.position.set(0, 0.08, 1.5 - vx * tf);
+      ref.current.rotation.set(Math.PI / 2, 0, 0);
       return;
     }
     ref.current.position.set(0, y, 1.5 - x);
